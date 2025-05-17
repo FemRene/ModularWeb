@@ -7,7 +7,7 @@ REPO_URL="https://github.com/FemRene/ModularWeb.git"
 
 echo "🚀 Starting Laravel project installation..."
 
-# Step 0: Check & install required dependencies
+# Step 0: Check & install required packages
 echo "🔍 Checking for required packages..."
 
 REQUIRED_PKG=("git" "composer" "php" "php-cli" "php-mbstring" "php-xml" "php-bcmath" "php-curl" "php-mysql" "php-tokenizer" "php-fileinfo" "php-fpm" "php-zip" "php-common")
@@ -48,7 +48,7 @@ else
     echo "✅ Repository already cloned."
 fi
 
-# Step 3: Prompt for database details
+# Step 3: Prompt for database details and configure .env
 if [ ! -f ".env" ]; then
     echo "📝 Creating .env file..."
 
@@ -71,35 +71,26 @@ else
     echo "✅ .env already exists."
 fi
 
-# Step 3: Install Composer dependencies
+# Step 4: Install Composer dependencies
 echo "📦 Installing Composer dependencies..."
 composer install --no-dev --optimize-autoloader
-
-# Step 4: Create .env if it doesn't exist
-if [ ! -f ".env" ]; then
-    echo "📝 Creating .env file..."
-    cp .env.example .env
-    php artisan key:generate
-else
-    echo "✅ .env already exists."
-fi
 
 # Step 5: Set permissions
 echo "🔐 Setting permissions..."
 sudo chown -R www-data:www-data storage bootstrap/cache
 sudo chmod -R 775 storage bootstrap/cache
 
-# Step 6: Run migrations
+# Step 6: Run database migrations
 echo "🧱 Running database migrations..."
 php artisan migrate --force
 
-# Step 7: Cache config, routes, views
+# Step 7: Cache config, routes, and views
 echo "📦 Caching config, routes, and views..."
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Step 8: Storage link
+# Step 8: Create storage symlink
 php artisan storage:link
 
 # Step 9: Done message and Caddy instructions
