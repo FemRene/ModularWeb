@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 
 Route::prefix('/dashboard')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [DashboardController::class, "getIndex"])->name('dashboard');
@@ -30,7 +31,7 @@ Route::middleware('auth')->group(function () {
 
 });
 
-if (SettingsController::get('registration_enabled')) {
+if (Schema::hasTable('settings') && SettingsController::get('registration_enabled')) {
     Route::get('/register', [RegisteredUserController::class, 'create'])
         ->middleware('guest')->name('register');
 
