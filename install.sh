@@ -1,20 +1,46 @@
 #!/bin/bash
 
+set -e
+
 PROJECT_DIR="/var/www/MW"
 REPO_URL="https://github.com/FemRene/ModularWebsite.git"
 
 echo "🚀 Starting Laravel project installation..."
 
-# Step 0: Ensure project directory exists
+# Step 0: Check & install required dependencies
+echo "🔍 Checking for required packages..."
+
+REQUIRED_PKG=("git" "composer" "php" "php-cli" "php-mbstring" "php-xml" "php-bcmath" "php-curl" "php-mysql" "php-tokenizer" "php-fileinfo" "php-fpm" "php-zip" "php-common")
+
+for pkg in "${REQUIRED_PKG[@]}"; do
+    if ! dpkg -s "$pkg" &>/dev/null; then
+        echo "📦 Installing missing package: $pkg"
+        sudo apt-get update
+        sudo apt-get install -y "$pkg"
+    else
+        echo "✅ $pkg is already installed."
+    fi
+done
+
+# Ensure PHP version is at least 8.1
+PHP_VERSION=$(php -r "echo PHP_VERSION;")
+REQUIRED_VERSION="8.1"
+
+if dpkg --compare-versions "$PHP_VERSION" "lt" "$REQUIRED_VERSION"; then
+    echo "❌ PHP $REQUIRED_VERSION or higher is required. You have $PHP_VERSION."
+    exit 1
+fi
+
+# Step 1: Ensure project directory exists
 if [ ! -d "$PROJECT_DIR" ]; then
     echo "📁 Creating project directory at $PROJECT_DIR..."
     sudo mkdir -p "$PROJECT_DIR"
-    sudo chown -R $USER:www-data "$PROJECT_DIR"
+    sudo chown -R "$USER:www-data" "$PROJECT_DIR"
 fi
 
 cd "$PROJECT_DIR" || exit
 
-# Step 1: Clone the repository
+# Step 2: Clone the repository
 if [ ! -d ".git" ]; then
     echo "🔄 Cloning repository..."
     git clone "$REPO_URL" . || { echo "❌ Git clone failed."; exit 1; }
@@ -22,11 +48,11 @@ else
     echo "✅ Repository already cloned."
 fi
 
-# Step 2: Install Composer dependencies
+# Step 3: Install Composer dependencies
 echo "📦 Installing Composer dependencies..."
 composer install --no-dev --optimize-autoloader
 
-# Step 3: Create .env if it doesn't exist
+# Step 4: Create .env if it doesn't exist
 if [ ! -f ".env" ]; then
     echo "📝 Creating .env file..."
     cp .env.example .env
@@ -35,12 +61,12 @@ else
     echo "✅ .env already exists."
 fi
 
-# Step 4: Set permissions
+# Step 5: Set permissions
 echo "🔐 Setting permissions..."
 sudo chown -R www-data:www-data storage bootstrap/cache
 sudo chmod -R 775 storage bootstrap/cache
 
-# Step 5: Run migrations
+# Step 6: Run migrations
 echo "🧱 Running database migrations..."
 php artisan migrate --force
 
@@ -53,6 +79,7 @@ php artisan view:cache
 # Step 8: Storage link
 php artisan storage:link
 
+# Step 9: Done message and Caddy instructions
 echo "✅ Laravel project setup completed at $PROJECT_DIR!"
 echo
 echo "📄 NEXT STEP: Caddy Setup Instructions"
