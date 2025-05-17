@@ -5,6 +5,7 @@ use App\Helpers\ModuleManager;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Yaml\Yaml;
 
@@ -48,9 +49,15 @@ class ModuleServiceProvider extends ServiceProvider
 
             // Load admin routes with middleware 'auth' + 'permission'
             if (File::exists($modulePath . '/routes/admin.php')) {
-                Route::middleware(['web', 'auth', 'permission'])
-                    ->name("modules.{$moduleSlug}.")
-                    ->group($modulePath . '/routes/admin.php');
+                if (Schema::hasTable('permissions')) {
+                    Route::middleware(['web', 'auth', 'permission'])
+                        ->name("modules.{$moduleSlug}.")
+                        ->group($modulePath . '/routes/admin.php');
+                } else {
+                    Route::middleware(['web', 'auth'])
+                        ->name("modules.{$moduleSlug}.")
+                        ->group($modulePath . '/routes/admin.php');
+                }
             }
 
             // Load views

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Middleware\CheckAdminRole;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -13,10 +12,16 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias([
-            'auth' => Authenticate::class,
-            'permission' => \App\Http\Middleware\PermissionMiddleware::class,
-        ]);
+        if (Schema::hasTable('permissions')) {
+            $middleware->alias([
+                'auth' => Authenticate::class,
+                'permission' => \App\Http\Middleware\PermissionMiddleware::class,
+            ]);
+        } else {
+            $middleware->alias([
+                'auth' => Authenticate::class,
+            ]);
+        }
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
