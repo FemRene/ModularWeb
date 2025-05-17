@@ -1,0 +1,30 @@
+name: RoleManager
+version: 1.0.0
+description: 'I know you want to manage your Roles :)'
+author: FemRene
+enabled: true
+tabs:
+  - name: Roles
+    link: modules.rolemanager.roles.index
+permissions:
+  - permission: access_rolemanager_module
+    route: modules.rolemanager.roles.index
+    description: Access Role Manager Module
+  - permission: create_roles
+    route: modules.rolemanager.roles.create
+    description: Create roles
+  - permission: edit_roles
+    route: modules.rolemanager.roles.edit
+    description: Edit roles
+  - permission: delete_roles
+    route: modules.rolemanager.roles.delete
+    description: Delete roles
+  - permission: update_roles
+    route: modules.rolemanager.roles.update
+    description: Update roles
+  - permission: store_roles
+    route: modules.rolemanager.roles.store
+    description: Store roles
+  - permission: destroy_roles
+    route: modules.rolemanager.roles.destroy
+    description: Destroy roles

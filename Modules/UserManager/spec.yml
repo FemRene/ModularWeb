@@ -1,0 +1,27 @@
+name: UserManager
+version: 1.0.0
+description: 'I know you want to manage your users :)'
+author: FemRene
+enabled: true
+tabs:
+  - name: Users
+    link: modules.usermanager.admin.users.index
+permissions:
+  - permission: access_users_index
+    route: modules.usermanager.admin.users.index
+    description: Users List
+  - permission: access_users_create
+    route: modules.usermanager.admin.users.create
+    description: Create new Users
+  - permission: access_users_store
+    route: modules.usermanager.admin.users.store
+    description: Store users
+  - permission: access_users_edit
+    route: modules.usermanager.admin.users.edit
+    description: Edit Users
+  - permission: access_users_update
+    route: modules.usermanager.admin.users.update
+    description: Update User Information's
+  - permission: access_users_destroy
+    route: modules.usermanager.admin.users.destroy
+    description: Destroy User

@@ -1,0 +1,5 @@
+name: EXAMPLE
+version: 1.0.0
+description: 'Example Module'
+author: EXAMPLE
+enabled: false

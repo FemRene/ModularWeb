@@ -1,0 +1,10 @@
+name: BASE
+version: 1.0.0
+description: "IT'S THE BASE MODULE YOU NEED\nDO NOT DELETE OR DEACTIVATE"
+author: FemRene
+enabled: true
+settings:
+  - key: registration_enabled
+    default: false
+    type: checkbox
+    label: Enable Registration
