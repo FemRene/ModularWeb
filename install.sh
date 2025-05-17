@@ -44,12 +44,6 @@ sudo chmod -R 775 storage bootstrap/cache
 echo "🧱 Running database migrations..."
 php artisan migrate --force
 
-# Step 6: Seed database (optional)
-read -p "🌱 Seed the database? (y/n): " seed
-if [[ "$seed" == "y" || "$seed" == "Y" ]]; then
-    php artisan db:seed --force
-fi
-
 # Step 7: Cache config, routes, views
 echo "📦 Caching config, routes, and views..."
 php artisan config:cache
