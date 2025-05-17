@@ -48,6 +48,29 @@ else
     echo "✅ Repository already cloned."
 fi
 
+# Step 3: Prompt for database details
+if [ ! -f ".env" ]; then
+    echo "📝 Creating .env file..."
+
+    read -p "📛 Enter database name: " DB_NAME
+    read -p "👤 Enter database username: " DB_USER
+    read -s -p "🔑 Enter database password: " DB_PASS
+    echo
+    read -p "🖥️  Enter database host (default: 127.0.0.1): " DB_HOST
+    DB_HOST=${DB_HOST:-127.0.0.1}
+
+    cp .env.example .env
+
+    sed -i "s/DB_DATABASE=.*/DB_DATABASE=${DB_NAME}/" .env
+    sed -i "s/DB_USERNAME=.*/DB_USERNAME=${DB_USER}/" .env
+    sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=${DB_PASS}/" .env
+    sed -i "s/DB_HOST=.*/DB_HOST=${DB_HOST}/" .env
+
+    php artisan key:generate
+else
+    echo "✅ .env already exists."
+fi
+
 # Step 3: Install Composer dependencies
 echo "📦 Installing Composer dependencies..."
 composer install --no-dev --optimize-autoloader
