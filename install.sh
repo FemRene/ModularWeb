@@ -3,7 +3,7 @@
 set -e
 
 PROJECT_DIR="/var/www/MW"
-REPO_URL="https://github.com/FemRene/ModularWebsite.git"
+REPO_URL="https://github.com/FemRene/ModularWeb.git"
 
 echo "🚀 Starting Laravel project installation..."
 
