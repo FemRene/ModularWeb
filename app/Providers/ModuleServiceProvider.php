@@ -20,7 +20,7 @@ class ModuleServiceProvider extends ServiceProvider
 
             // Load permissions from spec.yml
             $specPath = $modulePath . '/spec.yml';
-            if (File::exists($specPath)) {
+            if (File::exists($specPath) && Schema::hasTable('permissions')) {
                 $spec = Yaml::parseFile($specPath);
                 if (!empty($spec['permissions'])) {
                     foreach ($spec['permissions'] as $perm) {
