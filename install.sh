@@ -48,6 +48,9 @@ else
     echo "✅ Repository already cloned."
 fi
 
+echo "📦 Installing Composer dependencies..."
+composer install --no-dev --optimize-autoloader
+
 # Step 3: Prompt for database details and configure .env
 if [ ! -f ".env" ]; then
     echo "📝 Creating .env file..."
@@ -70,10 +73,6 @@ if [ ! -f ".env" ]; then
 else
     echo "✅ .env already exists."
 fi
-
-# Step 4: Install Composer dependencies
-echo "📦 Installing Composer dependencies..."
-composer install --no-dev --optimize-autoloader
 
 # Step 5: Set permissions
 echo "🔐 Setting permissions..."

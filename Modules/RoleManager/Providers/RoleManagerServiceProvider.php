@@ -8,7 +8,6 @@ class RoleManagerServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Models/Migrations');
         $this->loadViewsFrom(__DIR__ . '/../views', 'rolemanager');
     }
 
