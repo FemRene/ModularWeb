@@ -48,8 +48,6 @@ else
     echo "✅ Repository already cloned."
 fi
 
-echo "📦 Installing Composer dependencies..."
-composer install --no-dev --optimize-autoloader
 
 # Step 3: Prompt for database details and configure .env
 if [ ! -f ".env" ]; then
@@ -69,6 +67,8 @@ if [ ! -f ".env" ]; then
     sed -i "s|DB_PASSWORD=.*|DB_PASSWORD=${DB_PASS}|" .env
     sed -i "s|DB_HOST=.*|DB_HOST=${DB_HOST}|" .env
 
+echo "📦 Installing Composer dependencies..."
+composer install --no-dev --optimize-autoloader
     php artisan key:generate
 else
     echo "✅ .env already exists."
