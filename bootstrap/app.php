@@ -4,6 +4,7 @@ use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Support\Facades\Schema;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,16 +13,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        if (Schema::hasTable('permissions')) {
             $middleware->alias([
                 'auth' => Authenticate::class,
                 'permission' => \App\Http\Middleware\PermissionMiddleware::class,
             ]);
-        } else {
-            $middleware->alias([
-                'auth' => Authenticate::class,
-            ]);
-        }
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
